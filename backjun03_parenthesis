@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Aug 17 12:37:35 2020
+
+괄호 문자열(Parenthesis String, PS)은 두 개의 괄호 기호인 ‘(’ 와 ‘)’ 만으로 구성되어 있는 문자열이다. 
+그 중에서 괄호의 모양이 바르게 구성된 문자열을 올바른 괄호 문자열(Valid PS, VPS)이라고 부른다. 
+한 쌍의 괄호 기호로 된 “( )” 문자열은 기본 VPS 이라고 부른다. 
+만일 x 가 VPS 라면 이것을 하나의 괄호에 넣은 새로운 문자열 “(x)”도 VPS 가 된다. 
+그리고 두 VPS x 와 y를 접합(concatenation)시킨 새로운 문자열 xy도 VPS 가 된다. 예를 들어 “(())()”와 “((()))” 는 VPS 이지만 “(()(”, “(())()))” , 그리고 “(()” 는 모두 VPS 가 아닌 문자열이다. 
+
+여러분은 입력으로 주어진 괄호 문자열이 VPS 인지 아닌지를 판단해서 그 결과를 YES 와 NO 로 나타내어야 한다. 
+
+@author: nayeon  
+"""
+
+openInput =[]
+closeInput=[]
+closeCount=0
+
+blnFail = False
+#문장입력
+
+repeatTime = int(input("반복횟수를 입력하세요 : "))
+
+for c in range(0,repeatTime,1):
+    openCount = 0
+    closeCount=0
+    inputData = input("괄호입력 : ")
+    for i in range(0,len(inputData),1):
+        pointData = inputData[i:i+1]
+        if pointData =="(":
+            openInput.append((pointData))
+            openCount = +1
+        elif pointData ==")":
+            closeInput.append(pointData)
+            closeCount = +1
+            if len(openInput)>0: #)나오면 가장 마지막 (를 상쇄시킨다.
+                openInput.pop()
+                closeInput.pop()
+            elif len(openInput)==0 and openCount==0: #가장 처음에 )가 나오는경우
+                blnFail = True
+                break                
+        else:
+            blnFail=True #()가 아닌 다른 문자가 왔을때는 무조건 에러
+            break
+
+    if openCount!=closeCount: ##일단 괄호 갯수가 안맞으면 무조건 실패
+        print("ERROR")
+    elif blnFail==True: #)가 먼저 오거나 다른 문자가 입력되었을때
+        print("ERROR")
+    elif len(openInput)!=0 or len(closeInput)!=0:
+        print("ERROR")
+    elif openCount >0 and len(openInput)==0: #애초에 여는 괄호가 입력되었고, 지금은 없는경우 성공
+        print("SUCCESS")
+    else :
+        print("ERROR")
+        
+    #변수 초기화 다음문장을 받기 위한
+    blnFail=False
+    openInput.clear()
+    closeInput.clear()
+
